@@ -2,7 +2,7 @@ from rest_framework import serializers,validators
 from .models import User
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
-
+#序列化器
 class RegisterSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(label='确认密码', help_text='确认密码',
                                              min_length=6, max_length=20,
@@ -61,5 +61,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         # 创建token
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
-        user.token = token
+
+        #加密(后来发现django加密过了)
+        #message = pickle.dumps(user.password)
+        #key = pickle.dumps(SECRET_KEY)
+        #md_password = hmac.new(key, message, digestmod='MD5')
+        #user.password = md_password.hexdigest()
         return user

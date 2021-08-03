@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tea/',include('mytea.urls',namespace="mytea")),
     path('user/', include('userprofile.urls', namespace="user")),
+    path('order/',include('order.urls',namespace="order")),
 ]

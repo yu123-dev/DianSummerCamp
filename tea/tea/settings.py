@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import celery
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'celery',
     'mytea',
     'userprofile',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +136,7 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 
     # 到期时间
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300)
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
 }
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -153,3 +156,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# celery 配置
+BROKER_URL = 'redis://47.93.225.246:6379/'  # redis地址
+CELERY_TIMEZONE = TIME_ZONE    # 这里使用Django默认的时区。
+CELERYD_CONCURRENCY = 1  # 并发的work数量，串行达到排队效果
+CELERYD_FORCE_EXECV = True  # 防止死锁
+CELERYD_PREFETCH_MULTIPLIER = 3  # worker 每次去redis取任务的数量
+CELERYD_MAX_TASKS_PER_CHILD = 200  # 每个worker最多执行完200个任务就会被销毁，可防止内存泄露
+CELERY_TASK_ALWAYS_EAGER = True 
+
