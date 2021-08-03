@@ -23,7 +23,7 @@ class order(APIView):
             for now_order in now_orders:
                 store = now_order.store
                 o_num = t_num = 0
-                orders = store.order.filter(status = 0)
+                orders = store.order.filter(status = 0,user = user)
                 for order in orders:
                     o_num+=1
                     sorders = order.items.all()
@@ -76,8 +76,9 @@ class order(APIView):
                     opt.Option_Single.add(sorder)
                     sorder.sprice += opt.Option_price
                 sorder.Order = order
+                sorder.sprice += sorder.tea.price
                 sorder.save()
             order.save()
-            return JsonResponse({'msg':'订单创立成功'},json_dumps_params={'ensure_ascii':False})
+            return JsonResponse({'msg':'订单创立成功','oid':order.oid},json_dumps_params={'ensure_ascii':False})
         except:
             return JsonResponse({'msg':'请先登录'},json_dumps_params={'ensure_ascii':False})

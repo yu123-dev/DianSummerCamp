@@ -158,7 +158,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # celery 配置
-BROKER_URL = 'redis://47.93.225.246:6379/'  # redis地址
+BROKER_URL = 'redis://127.0.0.1:6379/'  # redis地址
 CELERY_TIMEZONE = TIME_ZONE    # 这里使用Django默认的时区。
 CELERYD_CONCURRENCY = 1  # 并发的work数量，串行达到排队效果
 CELERYD_FORCE_EXECV = True  # 防止死锁
